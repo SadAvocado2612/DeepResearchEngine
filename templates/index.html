@@ -904,7 +904,10 @@
                     <div class="export-btns" id="export-controls" style="display: none;">
                         <button class="export-btn" id="btn-dl-md" onclick="downloadFormat('md')">Download MD</button>
                         <button class="export-btn" id="btn-dl-html" onclick="downloadFormat('html')">Download HTML</button>
-                        <button class="export-btn" id="btn-dl-pdf" onclick="downloadFormat('pdf')">Download PDF</button>
+                        <button class="export-btn" id="btn-dl-pdf" onclick="exportPDF()" title="Opens browser print dialog — select Save as PDF">
+                            Save as PDF
+                            <span style="display:block; font-size:0.65rem; color: var(--text-muted); font-weight:400; margin-top:1px;">Opens print dialog</span>
+                        </button>
                     </div>
                 </div>
                 
@@ -1445,7 +1448,7 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             } 
-            else if (format === 'html' || format === 'pdf') {
+            else if (format === 'html') {
                 const payload = {
                     query: queryInputText,
                     report_md: currentReportMd,
@@ -1453,7 +1456,7 @@
                     evidence: currentEvidence
                 };
                 
-                fetch(`/api/export/${format}`, {
+                fetch(`/api/export/html`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -1468,7 +1471,7 @@
                             const url = URL.createObjectURL(blob);
                             const a = document.createElement('a');
                             a.href = url;
-                            a.download = `Deep_Research_Report.${format}`;
+                            a.download = `Deep_Research_Report.html`;
                             document.body.appendChild(a);
                             a.click();
                             document.body.removeChild(a);
@@ -1481,6 +1484,163 @@
                     alert("Export request failed.");
                 });
             }
+        }
+
+        // Browser print-to-PDF export — zero dependencies
+        function exportPDF() {
+            if (!currentReportMd) return;
+
+            // Pull the rendered HTML already in the report container
+            const reportContent = document.getElementById('report-container').innerHTML;
+            const query = queryInputText || 'Research Report';
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Research Report</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 11pt;
+      line-height: 1.8;
+      color: #1a1a1a;
+      padding: 0;
+    }
+
+    .page {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 25mm 20mm;
+    }
+
+    .report-title {
+      font-size: 20pt;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111;
+      line-height: 1.3;
+    }
+
+    .report-meta {
+      font-size: 9pt;
+      color: #666;
+      font-family: Arial, sans-serif;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #111;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: Arial, sans-serif;
+      color: #111;
+      margin: 28px 0 10px;
+    }
+
+    h1 { font-size: 16pt; border-bottom: 1px solid #ccc; padding-bottom: 4px; }
+    h2 { font-size: 13pt; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+    h3 { font-size: 11pt; }
+
+    p {
+      margin: 10px 0;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+
+    li { margin: 5px 0; }
+
+    strong { font-weight: 700; }
+    em { font-style: italic; }
+    code { font-family: monospace; font-size: 9pt; background: #f4f4f4; padding: 1px 4px; }
+
+    sup {
+      color: #2563eb;
+      font-size: 8pt;
+      font-weight: 600;
+    }
+
+    blockquote {
+      border-left: 3px solid #ccc;
+      margin: 10px 0;
+      padding: 4px 12px;
+      font-style: italic;
+      color: #444;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+      margin: 12px 0;
+    }
+
+    th {
+      background: #f0f0f0;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      font-family: Arial, sans-serif;
+      font-size: 8pt;
+    }
+
+    td {
+      padding: 5px 8px;
+      border: 1px solid #ddd;
+      vertical-align: top;
+    }
+
+    a { color: #2563eb; word-break: break-all; }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 20px 0;
+    }
+
+    /* Hide dark-mode specific elements */
+    .vgrh-mini-chart, .context-accordion,
+    .confidence-bar, .confidence-indicator { display: none !important; }
+
+    @media print {
+      body { padding: 0; }
+      .page { padding: 0; }
+      @page {
+        size: A4;
+        margin: 20mm;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="report-title">${query}</div>
+    <div class="report-meta">
+      Generated by Deep Research Engine &nbsp;|&nbsp;
+      ${new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+    </div>
+
+    <div class="report-body">
+      ${reportContent}
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      setTimeout(function() { window.print(); }, 500);
+    };
+  <\/script>
+</body>
+</html>
+            `);
+            printWindow.document.close();
         }
     </script>
 </body>

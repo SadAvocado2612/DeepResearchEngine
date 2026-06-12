@@ -8,12 +8,7 @@ from pipeline.config import GROQ_MODEL_QUALITY
 
 logger = logging.getLogger("DeepResearchEngine.Reporter")
 
-try:
-    import weasyprint
-    WEASYPRINT_AVAILABLE = True
-except Exception as e:
-    WEASYPRINT_AVAILABLE = False
-    logger.warning(f"WeasyPrint is not available ({e}). PDF export will fall back to UI instructions.")
+
 
 def markdown_to_html_simple(md_text: str) -> str:
     """Performs regex-based basic translation of Markdown to HTML for self-contained exports."""
@@ -502,14 +497,4 @@ def compile_self_contained_html(query: str, report_md: str, sources: List[Dict[s
 """
     return html_template
 
-def convert_html_to_pdf_bytes(html_content: str) -> bytes:
-    """Uses WeasyPrint to render self-contained HTML directly to PDF bytes."""
-    if not WEASYPRINT_AVAILABLE:
-        raise RuntimeError("WeasyPrint is not installed or available on this system.")
-    try:
-        # Generate pdf binary data
-        pdf_bytes = weasyprint.HTML(string=html_content).write_pdf()
-        return pdf_bytes
-    except Exception as e:
-        logger.error(f"WeasyPrint failed to write PDF: {e}")
-        raise
+

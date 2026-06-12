@@ -16,7 +16,7 @@ from pipeline.planner import research_planner, query_generator, gap_detector
 from pipeline.retriever import source_discoverer, web_pdf_fetcher, parser_chunker, hybrid_retriever
 from pipeline.ranker import vgrh_ranker
 from pipeline.verifier import evidence_extractor, claim_verifier
-from pipeline.reporter import report_generator, compile_self_contained_html, convert_html_to_pdf_bytes, WEASYPRINT_AVAILABLE
+from pipeline.reporter import report_generator, compile_self_contained_html
 
 # Load environment variables
 load_dotenv()
@@ -344,34 +344,6 @@ async def export_html_report(data: Dict[str, Any]):
             "Content-Disposition": "attachment; filename=Deep_Research_Report.html"
         }
     )
-
-@app.post("/api/export/pdf")
-async def export_pdf_report(data: Dict[str, Any]):
-    """Renders the HTML report format to PDF bytes using WeasyPrint or returns a fallback error code."""
-    query = data.get("query", "Deep Research Report")
-    report_md = data.get("report_md", "")
-    sources = data.get("sources", [])
-    evidence = data.get("evidence", [])
-    
-    if not WEASYPRINT_AVAILABLE:
-        return {
-            "success": False, 
-            "error": "WeasyPrint is not available on this system. Please use 'Download HTML' and print to PDF via your browser (Ctrl+P)."
-        }
-        
-    try:
-        html_content = compile_self_contained_html(query, report_md, sources, evidence)
-        pdf_bytes = convert_html_to_pdf_bytes(html_content)
-        return Response(
-            content=pdf_bytes,
-            media_type="application/pdf",
-            headers={
-                "Content-Disposition": "attachment; filename=Deep_Research_Report.pdf"
-            }
-        )
-    except Exception as e:
-        logger.error(f"PDF compilation failed: {e}")
-        return {"success": False, "error": f"WeasyPrint failed: {str(e)}"}
 
 
 if __name__ == "__main__":
