@@ -143,6 +143,9 @@ def call_llm(system_prompt: str, user_prompt: str, json_mode: bool = False, mode
     
     response_format = {"type": "json_object"} if json_mode else None
     
+    if json_mode and user_prompt:
+        user_prompt = user_prompt.strip() + "\n\nCRITICAL: You must return a valid JSON object. Do not include any introductory/concluding text or markdown formatting fences (like ```json). Respond with pure JSON."
+    
     try:
         completion = groq_client.chat.completions.create(
             model=model,

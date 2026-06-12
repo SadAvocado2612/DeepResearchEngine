@@ -19,9 +19,16 @@ def research_planner(query: str) -> tuple[List[str], str]:
     system_prompt = (
         "You are an expert research planner. Decompose the user's research topic into "
         "3 to 5 logical, high-impact sub-questions that must be answered to form a complete overview. "
-        "Additionally, provide a detailed Markdown description of the research plan. "
-        "You must return your response in JSON format with exactly two keys: "
-        "'sub_questions' (a list of strings) and 'research_plan_md' (a markdown text block detailing the strategy)."
+        "Additionally, provide a detailed Markdown description of the research plan.\n\n"
+        "CRITICAL: You must return your response as a valid JSON object. Do not include any explanation outside the JSON. "
+        "Do not wrap the response in markdown code blocks. The JSON object must contain exactly two keys:\n"
+        '- "sub_questions": a list of strings representing the sub-questions\n'
+        '- "research_plan_md": a markdown text block detailing the strategy\n\n'
+        'Example JSON output format:\n'
+        '{\n'
+        '  "sub_questions": ["question 1", "question 2"],\n'
+        '  "research_plan_md": "Markdown strategy description"\n'
+        '}'
     )
     user_prompt = f"Research Topic: {query}"
     
