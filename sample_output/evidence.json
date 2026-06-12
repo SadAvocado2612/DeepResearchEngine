@@ -1,0 +1,46 @@
+[
+  {
+    "claim": "Corsi-Rosenthal Boxes are a highly cost-effective DIY alternative to commercial HEPA filters, costing under $100 to build.",
+    "snippet": "The Corsi-Rosenthal Box, constructed using a box fan, four MERV 13 filters, and cardboard, can be built for under $100 and provides clean air delivery rates comparable to high-end HEPA units.",
+    "source": "https://www.epa.gov/indoor-air-quality-iaq/diy-air-cleaners-informational-webinar",
+    "status": "supported",
+    "confidence": 0.95,
+    "explanation": "Fully supported by EPA official web webinars detailing DIY air cleaner performance and cost specifications.",
+    "contradiction_note": null,
+    "corroborated": true,
+    "chunk_context": "The Corsi-Rosenthal Box, constructed using a box fan, four MERV 13 filters, and cardboard, can be built for under $100 and provides clean air delivery rates comparable to high-end HEPA units. This makes it an ideal solution for low-budget classrooms."
+  },
+  {
+    "claim": "Natural ventilation through opening windows reduces carbon dioxide levels but is highly dependent on outdoor weather conditions and outdoor AQI.",
+    "snippet": "Opening windows is the simplest method to increase fresh air exchange, significantly lowering CO2 and bioaerosol concentrations, though its effectiveness is limited by ambient temperature, wind speed, and outdoor air pollution.",
+    "source": "https://www.cdc.gov/coronavirus/2019-ncov/community/ventilation/classroom-ventilation.html",
+    "status": "supported",
+    "confidence": 0.90,
+    "explanation": "Supported by CDC guidelines which recommend opening windows but note limitations regarding outdoor weather and AQI.",
+    "contradiction_note": null,
+    "corroborated": true,
+    "chunk_context": "Opening windows is the simplest method to increase fresh air exchange, significantly lowering CO2 and bioaerosol concentrations, though its effectiveness is limited by ambient temperature, wind speed, and outdoor air pollution. Teachers should monitor local AQI before opening windows."
+  },
+  {
+    "claim": "Indoor plants have negligible impact on classroom air quality compared to mechanical ventilation or filtration.",
+    "snippet": "While houseplants are popular, scientific studies indicate that phytoremediation is far too slow; you would need between 10 and 1000 plants per square meter to equal the air exchange rate of a simple open window.",
+    "source": "https://arxiv.org/abs/2005.12345",
+    "status": "uncertain",
+    "confidence": 0.55,
+    "explanation": "The literature indicates that houseplants have minor impact on gaseous VOCs in real classroom sizes and zero impact on particulate matter (PM2.5).",
+    "contradiction_note": null,
+    "corroborated": false,
+    "chunk_context": "While houseplants are popular, scientific studies indicate that phytoremediation is far too slow; you would need between 10 and 1000 plants per square meter to equal the air exchange rate of a simple open window. Therefore, plants cannot replace active filtration."
+  },
+  {
+    "claim": "Regular maintenance of HVAC filters by upgrading to MERV-13 is a low-cost facility-level improvement.",
+    "snippet": "Upgrading standard school HVAC system filters from MERV-8 to MERV-13 offers a substantial upgrade in fine particle removal at a marginal increased cost of $15-30 per filter.",
+    "source": "https://pubmed.ncbi.nlm.nih.gov/32810987/",
+    "status": "supported",
+    "confidence": 0.85,
+    "explanation": "Supported by peer-reviewed studies on school ventilation upgrades showing cost efficiency of filter replacements.",
+    "contradiction_note": null,
+    "corroborated": true,
+    "chunk_context": "Upgrading standard school HVAC system filters from MERV-8 to MERV-13 offers a substantial upgrade in fine particle removal at a marginal increased cost of $15-30 per filter. This helps trap airborne viruses and dust."
+  }
+]
