@@ -93,6 +93,7 @@ def report_generator(query: str, plan_md: str, sources: List[Dict[str, Any]], ev
         "1. Executive Summary (a short direct answer summarizing key findings)\n"
         "2. Final Report (a structured detailed analysis with inline [citations])\n"
         "3. Limitations (unsupported claims, data gaps, or uncertainties detected)\n\n"
+        "Make sure that these sections are properly formatted and readable. \n"
         "Format the output JSON as: {'executive_summary': '...', 'final_report': '...', 'limitations': '...'}"
     )
     
